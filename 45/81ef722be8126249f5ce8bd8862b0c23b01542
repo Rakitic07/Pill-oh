@@ -1,0 +1,45 @@
+package-lock.json
+  s_6e389d8ab8807a::t_a96ccbf71ab758 1-2431
+package.json
+  s_6e389d8ab8807a::t_89deef758b1a56 1-37
+public/favicon.svg
+  s_6e389d8ab8807a::t_1c69d86d6700d2 1-46
+public/logo.svg
+  s_6e389d8ab8807a::t_4079ccdab341d1 1-46
+src/components/MedicineList.tsx
+  s_e5c442f66f8a0b::t_5790b2debbf7e6 1-48
+src/components/Modal.tsx
+  s_e5c442f66f8a0b::t_faa71525892579 1-30
+src/components/Popover.tsx
+  s_e5c442f66f8a0b::t_4e8c393dfecf4d 1-80
+src/components/ProgressRing.tsx
+  s_e5c442f66f8a0b::t_0844f60ae71a83 1-33
+src/sampleData.ts
+  s_e5c442f66f8a0b::t_0050e99e3c98bf 1-59
+src/types.ts
+  s_e5c442f66f8a0b::t_c607b8987e85c3 1-44
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "4581ef722be8126249f5ce8bd8862b0c23b01542",
+  "prompts": {},
+  "sessions": {
+    "s_6e389d8ab8807a": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "ccd33f2e-9f46-445a-946d-8f59a218ddf6",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "rakbiswa <rakbiswa@cisco.com>"
+    },
+    "s_e5c442f66f8a0b": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "02fe579b-8d2d-4835-8451-7c85a1557c2e",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "rakbiswa <rakbiswa@cisco.com>"
+    }
+  }
+}
