@@ -1,0 +1,53 @@
+server/store/types.ts
+  s_6e389d8ab8807a::t_ac31df5b19f89c 60
+src/components/NotificationSettings.tsx
+  s_6e389d8ab8807a::t_3b63e1d61d83ef 191
+server/notify/index.ts
+  s_6e389d8ab8807a::t_dbe5cc8c19fff6 159
+  s_6e389d8ab8807a::t_e2c14e663156a7 133-134
+  s_6e389d8ab8807a::t_9e002244fca407 166
+  s_6e389d8ab8807a::t_fdd1dc97ddfc00 129
+src/components/Icons.tsx
+  s_6e389d8ab8807a::t_399f1427dd6d03 34-39
+src/api.ts
+  s_6e389d8ab8807a::t_e3ceb75510e9b9 110
+src/components/AccountModal.tsx
+  s_6e389d8ab8807a::t_a5c6b7de8a790b 3-4
+  s_6e389d8ab8807a::t_fc266f1fb56af5 82
+  s_6e389d8ab8807a::t_e417e99f44ba2f 121-134
+src/App.tsx
+  s_6e389d8ab8807a::t_941ae8e7108bd0 4
+  s_6e389d8ab8807a::t_1dfcb276929eb1 43,47
+  s_6e389d8ab8807a::t_47c0a3afce3dac 20
+  s_6e389d8ab8807a::t_e0f2a75cc70baa 44-46,48-61
+  s_6e389d8ab8807a::t_81ab0ee822387d 204
+  s_6e389d8ab8807a::t_1c460c31d4da0f 171
+server/store/file.ts
+  s_6e389d8ab8807a::t_812755b786c4c8 125-130
+src/sync.ts
+  s_6e389d8ab8807a::t_a2d7493f35d141 65-71
+server/store/postgres.ts
+  s_6e389d8ab8807a::t_be81a2ab905402 170-173
+server/app.ts
+  s_6e389d8ab8807a::t_66d6476c073061 5
+  s_6e389d8ab8807a::t_696c310289636c 301-309
+  s_6e389d8ab8807a::t_45ce6b8c3a743a 499
+scripts/generate-assets.mjs
+  s_6e389d8ab8807a::t_5703783d4e6cc6 181-183
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "03e633b6cb3412fea7a44bba696b2a91d49bbbe1",
+  "prompts": {},
+  "sessions": {
+    "s_6e389d8ab8807a": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "ccd33f2e-9f46-445a-946d-8f59a218ddf6",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "rakbiswa <rakbiswa@cisco.com>"
+    }
+  }
+}
