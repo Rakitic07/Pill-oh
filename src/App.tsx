@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { DatePicker } from './components/DatePicker';
 import { DoseCard } from './components/DoseCard';
-import { GearIcon, PillIcon, PlusIcon } from './components/Icons';
+import { GearIcon, LogoutIcon, PillIcon, PlusIcon } from './components/Icons';
 import { LogoMark } from './components/Logo';
 import { MedicineForm } from './components/MedicineForm';
 import { MedicineList } from './components/MedicineList';
@@ -17,7 +17,7 @@ import type { NotifyPrefs, User, UserData } from './api';
 import { AccountModal } from './components/AccountModal';
 import { AdminPanel } from './components/AdminPanel';
 import { useNow } from './hooks';
-import { useSyncedState, useSyncStatus } from './sync';
+import { signOut, useSyncedState, useSyncStatus } from './sync';
 import { sampleMedicines } from './sampleData';
 import {
   DEFAULT_SETTINGS,
@@ -38,6 +38,25 @@ const SYNC_LABEL = { saved: 'All changes saved', saving: 'Saving…', error: 'Of
 function SyncDot() {
   const status = useSyncStatus();
   return <span className={`sync-dot ${status}`} title={SYNC_LABEL[status]} aria-label={SYNC_LABEL[status]} />;
+}
+
+function LogoutButton({ className = '' }: { className?: string }) {
+  const [busy, setBusy] = useState(false);
+  return (
+    <button
+      className={`clay-btn icon-btn ${className}`}
+      aria-label="Log out"
+      title="Log out"
+      disabled={busy}
+      onClick={() => {
+        if (!confirm('Log out of Pill-oh on this device?')) return;
+        setBusy(true);
+        void signOut();
+      }}
+    >
+      <LogoutIcon />
+    </button>
+  );
 }
 
 function greeting(now: Date) {
@@ -149,6 +168,7 @@ export default function App({ user, initialData, initialTab = 'schedule' }: Prop
               {user.username.slice(0, 1).toUpperCase()}
             </button>
             <ThemePicker value={theme} custom={customTheme} onChange={setTheme} onCustomChange={setCustomTheme} />
+            <LogoutButton />
           </div>
         </header>
         <AdminPanel now={now} />
@@ -181,6 +201,7 @@ export default function App({ user, initialData, initialTab = 'schedule' }: Prop
           <button className="clay-btn primary" onClick={() => setEditing('new')}>
             <PlusIcon width={18} height={18} /> <span className="hide-sm">Add medicine</span>
           </button>
+          <LogoutButton className="hide-sm" />
         </div>
       </header>
 

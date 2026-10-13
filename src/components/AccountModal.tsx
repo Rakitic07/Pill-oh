@@ -1,5 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { api, ApiError, type User } from '../api';
+import { signOut } from '../sync';
+import { LogoutIcon } from './Icons';
 import { Modal } from './Modal';
 import { RecoveryCodeView } from './RecoveryCodeView';
 
@@ -77,7 +79,7 @@ export function AccountModal({ user, onClose }: Props) {
               Member since {new Date(user.createdAt).toLocaleDateString([], { month: 'long', year: 'numeric' })}
               {user.isAdmin ? ' · Admin' : ''}
             </p>
-            <p className="muted small-note left">You stay signed in on this device.</p>
+            <p className="muted small-note left">You stay signed in on this device until you log out.</p>
           </div>
         </div>
 
@@ -116,6 +118,20 @@ export function AccountModal({ user, onClose }: Props) {
             <button type="submit" className="clay-btn" disabled={busy}>Generate new code</button>
           </div>
         </form>
+
+        <div className="form-actions">
+          <button
+            type="button"
+            className="clay-btn danger wide"
+            disabled={busy}
+            onClick={() => {
+              setBusy(true);
+              void signOut();
+            }}
+          >
+            <LogoutIcon width={18} height={18} /> Log out
+          </button>
+        </div>
       </div>
     </Modal>
   );

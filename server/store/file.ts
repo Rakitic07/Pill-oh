@@ -122,6 +122,12 @@ export class FileStore implements Store {
     await this.persist();
   }
 
+  async deleteSession(tokenHash: string) {
+    await this.sync();
+    this.db.sessions = this.db.sessions.filter((s) => s.tokenHash !== tokenHash);
+    await this.persist();
+  }
+
   async deleteSessionsForUser(userId: string) {
     await this.sync();
     this.db.sessions = this.db.sessions.filter((s) => s.userId !== userId);

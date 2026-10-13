@@ -107,6 +107,7 @@ export const api = {
     request<{ user: User; recoveryCode: string }>('POST', '/auth/signup', { username, password }),
   login: (username: string, password: string, admin = false) =>
     request<{ user: User }>('POST', '/auth/login', { username, password, admin }),
+  logout: () => request<{ ok: true }>('POST', '/auth/logout'),
   adminUnlock: (unlockKey: string) => request<{ user: User }>('POST', '/auth/admin-unlock', { unlockKey }),
   recover: (username: string, recoveryCode: string, newPassword: string) =>
     request<{ user: User; recoveryCode: string }>('POST', '/auth/recover', { username, recoveryCode, newPassword }),

@@ -188,7 +188,7 @@ export function NotificationSettings({ prefs, onChange }: Props) {
         <div className="chips">
           {LEADS.map((m) => (
             <button key={m} type="button" className={`chip ${current.leadMinutes === m ? 'active' : ''}`} onClick={() => update({ leadMinutes: m })}>
-              {m ? `${m} min before` : 'At dose time'}
+              {m ? `${m} min before` : '1 min before'}
             </button>
           ))}
         </div>

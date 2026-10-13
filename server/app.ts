@@ -2,7 +2,7 @@ import { getConnInfo } from '@hono/node-server/conninfo';
 import { randomInt, randomUUID } from 'node:crypto';
 import { Hono, type Context } from 'hono';
 import { bodyLimit } from 'hono/body-limit';
-import { getCookie, setCookie } from 'hono/cookie';
+import { deleteCookie, getCookie, setCookie } from 'hono/cookie';
 import { secureHeaders } from 'hono/secure-headers';
 import { config } from './config.ts';
 import { deliver, NTFY_KEY, PUSH_KEY, runNotifier, WA_KEY, WA_PENDING_KEY } from './notify/index.ts';
@@ -298,6 +298,15 @@ export function createApp(store: Store) {
     return c.json({ user: publicUser(user), recoveryCode });
   });
 
+  app.post('/api/auth/logout', async (c) => {
+    const token = getCookie(c, COOKIE);
+    if (token && token.length <= 128) await store.deleteSession(sha256(token));
+    deleteCookie(c, COOKIE, { path: '/', secure: config.isProd });
+    const user = requireUser(c);
+    if (user) audit('auth.logout', { userId: user.id });
+    return c.json({ ok: true });
+  });
+
   app.get('/api/me', (c) => {
     const user = requireUser(c);
     if (!user) return c.json({ error: 'Not signed in.' }, 401);
@@ -487,7 +496,7 @@ export function createApp(store: Store) {
     const sent = await deliver(store, user.id, await store.getUserData(user.id), {
       kind: 'test',
       title: '✅ Pill-oh test alert',
-      body: 'Alerts are working! 🎉\nAt dose time you’ll get a reminder like this, listing each medicine with its dosage and notes.',
+      body: '🎉 Alerts are working. You’ll get one like this when a dose is due.',
       tag: 'test',
       vars: { meds: 'Test medicine', time: 'now' },
     }, channels);

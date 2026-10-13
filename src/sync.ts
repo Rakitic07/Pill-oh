@@ -62,6 +62,13 @@ if (typeof window !== 'undefined') {
   });
 }
 
+/** Saves pending changes, ends this device's session, and reloads so no signed-in state stays in memory. */
+export async function signOut(): Promise<void> {
+  await flush().catch(() => undefined);
+  await api.logout().catch(() => undefined);
+  window.location.reload();
+}
+
 export function useSyncStatus(): SyncStatus {
   return useSyncExternalStore(
     (cb) => {

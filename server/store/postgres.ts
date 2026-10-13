@@ -167,6 +167,10 @@ export class PgStore implements Store {
     await this.pool.query('UPDATE sessions SET last_used_at = $2 WHERE token_hash = $1', [tokenHash, at]);
   }
 
+  async deleteSession(tokenHash: string) {
+    await this.pool.query('DELETE FROM sessions WHERE token_hash = $1', [tokenHash]);
+  }
+
   async deleteSessionsForUser(userId: string) {
     await this.pool.query('DELETE FROM sessions WHERE user_id = $1', [userId]);
   }

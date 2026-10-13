@@ -57,6 +57,7 @@ export interface Store {
   createSession(session: SessionRecord): Promise<void>;
   getSession(tokenHash: string): Promise<SessionRecord | null>;
   touchSession(tokenHash: string, at: string): Promise<void>;
+  deleteSession(tokenHash: string): Promise<void>;
   deleteSessionsForUser(userId: string): Promise<void>;
 
   getUserData(userId: string): Promise<Record<string, unknown>>;

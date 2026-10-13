@@ -62,12 +62,6 @@ const names = (doses: Dose[]) => {
   return list.length <= 2 ? list.join(' & ') : `${list.slice(0, 2).join(', ')} +${list.length - 2} more`;
 };
 
-/** One line per medicine: "• Metformin (500 mg) - after food". */
-const medLines = (doses: Dose[]) =>
-  [...new Map(doses.map((d) => [d.med.id, d.med])).values()]
-    .map((m) => `• ${m.name}${m.dosage ? ` (${m.dosage})` : ''}${m.notes?.trim() ? ` - ${m.notes.trim().slice(0, 80)}` : ''}`)
-    .join('\n');
-
 export interface Alert extends PushPayload {
   kind: NtfyKind;
   /** Short values for an approved WhatsApp template: {{1}} medicines, {{2}} time. */
@@ -132,11 +126,12 @@ export async function runNotifier(store: Store) {
     const logs = (data.logs ?? {}) as DoseLogs;
     const settings: Settings = { ...DEFAULT_SETTINGS, ...(data.settings as Partial<Settings> | undefined) };
     const today = toDateKey(now);
-    const doses = [addDays(today, -1), today].flatMap((day) => getDosesForDate(meds, logs, day, now, settings));
+    const doses = [addDays(today, -1), today, addDays(today, 1)].flatMap((day) => getDosesForDate(meds, logs, day, now, settings));
 
     const groups = new Map<string, { kind: 'due' | 'nudge'; time: string; doses: Dose[] }>();
     const consider = (dose: Dose, kind: 'due' | 'nudge', triggerAt: number) => {
-      const diff = now.getTime() - triggerAt;
+      // Due alerts go out on the tick before their time, so cron/cold-start delay never makes them late.
+      const diff = now.getTime() - (kind === 'due' ? triggerAt - TICK_MS : triggerAt);
       if (dose.log || diff < 0 || diff >= WINDOW_MS) return;
       const id = `${dose.key}|${kind}`;
       if (notified[id]) return;
@@ -156,20 +151,19 @@ export async function runNotifier(store: Store) {
     for (const { kind, time, doses: group } of groups.values()) {
       const meds = names(group);
       const at = clock(time);
-      const list = medLines(group);
       const alert: Alert =
         kind === 'due'
           ? {
               kind,
               title: `💊 Time for ${meds}`,
-              body: `${list}\n\n${prefs.leadMinutes ? `⏳ Due in ${prefs.leadMinutes} min, at ${at}.` : `🕒 Due now, ${at}.`} Tap to tick it off in Pill-oh.`,
+              body: `${prefs.leadMinutes ? `⏳ Due at ${at}.` : `🕒 Due now, ${at}.`} Tap to tick it off in Pill-oh.`,
               tag: `due-${group[0].key}`,
               vars: { meds, time: at },
             }
           : {
               kind,
               title: `⏰ Did you take ${meds}?`,
-              body: `${list}\n\n🕒 It was due at ${at} and will be marked missed soon. Tap to tick it off.`,
+              body: `🕒 It was due at ${at} and will be marked missed soon. Tap to tick it off in Pill-oh.`,
               tag: `nudge-${group[0].key}`,
               vars: { meds, time: at },
             };
