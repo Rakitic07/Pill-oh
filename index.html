@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Pill-oh · Medicine Tracker</title>
+    <meta name="description" content="Track every dose, get gentle colour cues as it's due, and see how punctual you've been — in a soft clay design." />
+    <meta name="theme-color" content="#141416" />
+
+    <!-- Install as an app (Android / iPhone) -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Pill-oh" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <!-- Link previews (WhatsApp, iMessage, Telegram, Slack, X, Facebook…) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Pill-oh" />
+    <meta property="og:title" content="Pill-oh · Your clay-soft medicine tracker" />
+    <meta property="og:description" content="Tick off each dose, get gentle colour cues as it's due, and see a report card of how punctual you were." />
+    <meta property="og:url" content="%SITE_URL%/" />
+    <meta property="og:image" content="%SITE_URL%/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Pill-oh app preview showing today's doses with on-time, due-soon and missed marks" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Pill-oh · Your clay-soft medicine tracker" />
+    <meta name="twitter:description" content="Tick off each dose, get gentle colour cues as it's due, and see a report card of how punctual you were." />
+    <meta name="twitter:image" content="%SITE_URL%/og-image.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="/theme-init.js"></script>
+  </head>
+  <body>
+    <div class="bubbles" aria-hidden="true">
+      <span style="--x: 6%; --s: 46px; --d: 26s; --delay: -4s"></span>
+      <span style="--x: 18%; --s: 22px; --d: 19s; --delay: -12s"></span>
+      <span style="--x: 34%; --s: 64px; --d: 32s; --delay: -20s"></span>
+      <span style="--x: 55%; --s: 28px; --d: 22s; --delay: -2s"></span>
+      <span style="--x: 72%; --s: 52px; --d: 29s; --delay: -15s"></span>
+      <span style="--x: 86%; --s: 18px; --d: 17s; --delay: -8s"></span>
+      <span style="--x: 94%; --s: 36px; --d: 24s; --delay: -18s"></span>
+    </div>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

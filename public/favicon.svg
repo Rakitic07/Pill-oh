@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  
+  <defs>
+    <linearGradient id="f-gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffe066"/><stop offset="1" stop-color="#e3a500"/>
+    </linearGradient>
+    <radialGradient id="f-hl" cx="22%" cy="18%" r="60%">
+      <stop offset="0" stop-color="#fff" stop-opacity="0.55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="f-lo" cx="88%" cy="92%" r="60%">
+      <stop offset="0" stop-color="#8a5c00" stop-opacity="0.45"/><stop offset="1" stop-color="#8a5c00" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" rx="128" fill="url(#f-gold)"/>
+  <rect width="512" height="512" rx="128" fill="url(#f-hl)"/>
+  <rect width="512" height="512" rx="128" fill="url(#f-lo)"/>
+  <rect x="6" y="6" width="500" height="500" rx="122" fill="none" stroke="#fff" stroke-opacity="0.35" stroke-width="6"/>
+  <g transform="translate(256 262) scale(0.82) translate(-256 -262)">
+  <defs>
+    <linearGradient id="fm-cream" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fffaf0"/><stop offset="1" stop-color="#e6dbc0"/>
+    </linearGradient>
+    <linearGradient id="fm-dark" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a3118"/><stop offset="1" stop-color="#17130a"/>
+    </linearGradient>
+    <linearGradient id="fm-mint" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7cf0b0"/><stop offset="1" stop-color="#25a862"/>
+    </linearGradient>
+    <clipPath id="fm-cap"><rect x="91" y="176" width="290" height="120" rx="60"/></clipPath>
+    <filter id="fm-drop" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="8" dy="16" stdDeviation="14" flood-color="#5a3c00" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+  <g transform="rotate(-40 236 236)" filter="url(#fm-drop)">
+    <g clip-path="url(#fm-cap)">
+      <rect x="91" y="176" width="145" height="120" fill="url(#fm-cream)"/>
+      <rect x="236" y="176" width="145" height="120" fill="url(#fm-dark)"/>
+      <rect x="232" y="176" width="8" height="120" fill="#000" opacity="0.18"/>
+    </g>
+    <rect x="121" y="194" width="226" height="20" rx="10" fill="#fff" opacity="0.5"/>
+  </g>
+  <g filter="url(#fm-drop)">
+    <circle cx="360" cy="360" r="86" fill="#fff8e1"/>
+    <circle cx="360" cy="360" r="70" fill="url(#fm-mint)"/>
+    <path d="M326 364l24 24 46-52" stroke="#fff" stroke-width="22" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g></g></svg>
