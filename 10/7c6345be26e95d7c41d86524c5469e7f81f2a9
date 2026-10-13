@@ -1,0 +1,118 @@
+src/components/MedicineList.tsx
+  s_e5c442f66f8a0b::t_5790b2debbf7e6 1-48
+README.md
+  s_6e389d8ab8807a::t_4f3461208a379d 51
+  s_6e389d8ab8807a::t_09e9cbad4930c8 94-116
+  s_6e389d8ab8807a::t_45a97b63fa7409 48-50
+  s_6e389d8ab8807a::t_ef28906cd5dd73 52-54,91-93
+  s_6e389d8ab8807a::t_56dec9edc647e1 117-119
+public/favicon.svg
+  s_6e389d8ab8807a::t_1c69d86d6700d2 1-46
+server/notify/push.ts
+  s_6e389d8ab8807a::t_1d010aaa91bedf 24-27,42,68,86
+  s_6e389d8ab8807a::t_29ebae6e0afe57 21-23
+  s_6e389d8ab8807a::t_c6d46ace09aa69 28-30,39-41
+  s_6e389d8ab8807a::t_8634e74f02a85b 43-45,65-67
+  s_6e389d8ab8807a::t_863116690e3ee0 69-71,83-85
+  s_6e389d8ab8807a::t_9fc562162c5cef 87
+server/app.ts
+  s_6e389d8ab8807a::t_a305e64a174f53 8
+  s_6e389d8ab8807a::t_f5c286b4436aa7 152,172,207,234,260,266,282-283,297,306,318-319,348,361,371,381,388,412,431,440,456,458-465,488-489,500,532,553,560,567,576
+  s_6e389d8ab8807a::t_ca175c5f47a09b 5-7
+  s_6e389d8ab8807a::t_a1cef3e987771c 9-11,149-151
+  s_6e389d8ab8807a::t_f0a651e38e25f2 153-155,169-171
+  s_6e389d8ab8807a::t_e92452be63933a 173-175,204-206
+  s_6e389d8ab8807a::t_31bd8bdf241afe 208-210,231-233
+  s_6e389d8ab8807a::t_afb383d62fe16c 235-237,257-259
+  s_6e389d8ab8807a::t_a6b667d3233e24 261-265
+  s_6e389d8ab8807a::t_0cbdb8247ab106 267-269,279-281
+  s_6e389d8ab8807a::t_539e7fc03592d2 284-286,294-296
+  s_6e389d8ab8807a::t_00377c848d9d19 298-300,303-305
+  s_6e389d8ab8807a::t_e3978e397726fa 307-309,315-317
+  s_6e389d8ab8807a::t_3ea8c03c52ba53 320-322,345-347
+  s_6e389d8ab8807a::t_af67a5ac5b2c5a 349-351,358-360
+  s_6e389d8ab8807a::t_c04bd3e4670876 362-364,368-370
+  s_6e389d8ab8807a::t_dd9b702203eaf1 372-374,378-380
+  s_6e389d8ab8807a::t_fa4fc6882b0fc2 382-387
+  s_6e389d8ab8807a::t_b64b51c51a3613 389-391,409-411
+  s_6e389d8ab8807a::t_d82eb46dcdd078 413-415,428-430
+  s_6e389d8ab8807a::t_5484a88759471f 432-434,437-439
+  s_6e389d8ab8807a::t_5957127677b3e7 441-443,453-455
+  s_6e389d8ab8807a::t_75a015cc559c2b 457
+  s_6e389d8ab8807a::t_37fcaca6db6b62 466-468,485-487
+  s_6e389d8ab8807a::t_27d9ad75bd995d 490-492,497-499
+  s_6e389d8ab8807a::t_aed3589b580995 501-503,529-531
+  s_6e389d8ab8807a::t_ec0b40c117b17a 533-535,550-552
+  s_6e389d8ab8807a::t_d2f127994543af 554-559
+  s_6e389d8ab8807a::t_beef24bf03199e 561-566
+  s_6e389d8ab8807a::t_ecc605b013cfa3 568-570,573-575
+  s_6e389d8ab8807a::t_922fe6f2b4effa 577-579
+server/security.ts
+  s_6e389d8ab8807a::t_27b45754a8edd2 1-12
+  s_6e389d8ab8807a::t_05d6e920b83701 13-15
+package.json
+  s_6e389d8ab8807a::t_89deef758b1a56 1-38
+server/store/index.ts
+  s_6e389d8ab8807a::t_5bd736bbe01a54 6-11
+  s_6e389d8ab8807a::t_17874c1b26bb7a 3-5
+  s_6e389d8ab8807a::t_41816558364a71 12-14
+server/config.ts
+  s_6e389d8ab8807a::t_1857333f875356 8-13
+  s_6e389d8ab8807a::t_938d00f92a36de 5-7
+  s_6e389d8ab8807a::t_f90a906758880a 14-16
+.env.example
+  s_6e389d8ab8807a::t_7d9ee208c37652 46-52
+  s_6e389d8ab8807a::t_d3e129e64c9ae1 43-45
+public/logo.svg
+  s_6e389d8ab8807a::t_4079ccdab341d1 1-46
+src/components/Modal.tsx
+  s_e5c442f66f8a0b::t_faa71525892579 1-30
+server/notify/index.ts
+  s_6e389d8ab8807a::t_71f40975aaf325 107-121
+  s_6e389d8ab8807a::t_149c1b54d56978 134-137
+  s_6e389d8ab8807a::t_7333f3c45f6a94 24,33,53,68,75,87,97,101,147,167-179,190
+  s_6e389d8ab8807a::t_e8c97dac836d09 1-23,25-32,34-52,54-67,69-74,76-86,88-96,98-100,102-106,122-133,138-146,148-166,180-189
+scripts/vercel-output.mjs
+  s_6e389d8ab8807a::t_1e2093086a5cf0 1-76
+src/components/Popover.tsx
+  s_e5c442f66f8a0b::t_4e8c393dfecf4d 1-80
+src/components/ProgressRing.tsx
+  s_e5c442f66f8a0b::t_0844f60ae71a83 1-33
+server/vercel.ts
+  s_6e389d8ab8807a::t_38fef7dfcbf0ad 1-3,5-9,11-18,20-21,23-29
+  s_6e389d8ab8807a::t_c6559f8011ca8a 4,10,19,22,30-40
+package-lock.json
+  s_6e389d8ab8807a::t_a96ccbf71ab758 1-2678
+src/types.ts
+  s_e5c442f66f8a0b::t_c607b8987e85c3 1-44
+src/sampleData.ts
+  s_e5c442f66f8a0b::t_0050e99e3c98bf 1-59
+vercel.json
+  s_6e389d8ab8807a::t_b4afa362e93773 1-6
+.gitignore
+  s_6e389d8ab8807a::t_fbe21ab28bebfa 1-8
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "107c6345be26e95d7c41d86524c5469e7f81f2a9",
+  "prompts": {},
+  "sessions": {
+    "s_6e389d8ab8807a": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "ccd33f2e-9f46-445a-946d-8f59a218ddf6",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": null
+    },
+    "s_e5c442f66f8a0b": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "02fe579b-8d2d-4835-8451-7c85a1557c2e",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "rakbiswa <rakbiswa@cisco.com>"
+    }
+  }
+}
