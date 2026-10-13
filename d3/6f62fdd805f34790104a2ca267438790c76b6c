@@ -1,0 +1,44 @@
+server/security.ts
+  s_6e389d8ab8807a::t_cd201ce8017ff1 18-23
+src/components/AuthPage.tsx
+  s_6e389d8ab8807a::t_107c4e96f44329 56
+  s_6e389d8ab8807a::t_13c3775bef81f9 65
+  s_6e389d8ab8807a::t_b9e0dda02e71d1 252-265
+  s_6e389d8ab8807a::t_518a996ce2efd2 81-85
+src/api.ts
+  s_6e389d8ab8807a::t_1b253177a471ca 101-102
+server/config.ts
+  s_6e389d8ab8807a::t_b30b012950f7ab 17-18
+.env.example
+  s_6e389d8ab8807a::t_c2a6a4fd10799b 21-24
+README.md
+  s_6e389d8ab8807a::t_21040163bb4959 132
+  s_6e389d8ab8807a::t_943a56a8ae4ffc 64-71
+  s_6e389d8ab8807a::t_304a2992529abf 47
+server/app.ts
+  s_6e389d8ab8807a::t_7271d86fad2792 22
+  s_6e389d8ab8807a::t_761a960af551d2 226,230-232,234-239
+  s_6e389d8ab8807a::t_3b82301f14c50d 233
+  s_6e389d8ab8807a::t_a8d19247c9b1a9 45
+  s_6e389d8ab8807a::t_e27f72e45f4310 240
+package.json
+  s_6e389d8ab8807a::t_cff23c5c44e066 14-15
+server/scripts/admin-unlock-hash.ts
+  s_6e389d8ab8807a::t_e93c1b55eb3be6 1-17
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "d36f62fdd805f34790104a2ca267438790c76b6c",
+  "prompts": {},
+  "sessions": {
+    "s_6e389d8ab8807a": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "ccd33f2e-9f46-445a-946d-8f59a218ddf6",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "rakbiswa <rakbiswa@cisco.com>"
+    }
+  }
+}
