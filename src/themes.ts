@@ -1,9 +1,11 @@
-export type PresetThemeId = 'lavender' | 'noir' | 'aurora' | 'ocean' | 'rose' | 'teal';
+export type PresetThemeId = 'ember' | 'lavender' | 'noir' | 'aurora' | 'ocean' | 'rose' | 'teal';
 export type ThemeId = PresetThemeId | 'custom';
 
-export const DEFAULT_THEME: ThemeId = 'noir';
+/** Used until the user picks a theme; keep public/theme-init.js, index.html and the manifest in sync. */
+export const DEFAULT_THEME: ThemeId = 'ember';
 
 export const THEMES: { id: PresetThemeId; name: string; colors: [string, string, string] }[] = [
+  { id: 'ember', name: 'Ember Coral (dark)', colors: ['#1c1f26', '#ff7a59', '#4a505e'] },
   { id: 'lavender', name: 'Lavender Clay', colors: ['#e9ecfb', '#a99dff', '#8b7cf6'] },
   { id: 'noir', name: 'Noir Gold (dark)', colors: ['#1d1d20', '#ffdb4d', '#55555e'] },
   { id: 'ocean', name: 'Ocean Breeze', colors: ['#e1ebf7', '#76afff', '#3d8bfd'] },

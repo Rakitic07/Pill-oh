@@ -10,7 +10,10 @@ const siteUrl = (url: string): Plugin => ({
 export default defineConfig(({ mode }) => {
   const env = { ...loadEnv(mode, process.cwd(), 'SITE_'), ...process.env };
   return {
-    plugins: [react(), siteUrl(env.SITE_URL ?? '')],
+    plugins: [
+      react(),
+      siteUrl(env.SITE_URL?.trim() || (env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${env.VERCEL_PROJECT_PRODUCTION_URL}` : '')),
+    ],
     server: {
       watch: { ignored: ['**/.vercel/**', '**/server/.data/**'] },
       proxy: {

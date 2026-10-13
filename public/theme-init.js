@@ -2,10 +2,10 @@
 (function () {
   var root = document.documentElement;
   try {
-    var theme = JSON.parse(localStorage.getItem('pillpal.theme')) || 'noir';
+    var theme = JSON.parse(localStorage.getItem('pill-oh.theme')) || 'ember';
     root.dataset.theme = theme;
     if (theme === 'custom') {
-      var vars = JSON.parse(localStorage.getItem('pillpal.customVars') || '{}');
+      var vars = JSON.parse(localStorage.getItem('pill-oh.customVars') || '{}');
       for (var k in vars) {
         if (/^(--[a-z0-9-]+|color-scheme)$/.test(k) && /^[#a-z0-9(),. ]+$/i.test(vars[k])) {
           root.style.setProperty(k, vars[k]);
@@ -13,6 +13,6 @@
       }
     }
   } catch (e) {
-    root.dataset.theme = 'noir';
+    root.dataset.theme = 'ember';
   }
 })();

@@ -19,9 +19,11 @@
 - **Live status** — doses turn amber as they get close, show a tick when taken, and a cross is added automatically
   when one is missed (you can still mark it as taken later).
 - **Report card** — adherence and punctuality over 7 / 30 / 90 days with clay charts, by medicine and by time of day.
-- **Themes** — Noir Gold (default), Lavender, Ocean, Rose, Aurora, Teal, or build your own from two colours.
+  Download a **daily, monthly or quarterly PDF** report.
+- **Themes** — Ember Coral (default), Noir Gold, Lavender, Ocean, Rose, Aurora, Teal, or build your own from two colours.
 - **Accounts** — case-insensitive usernames, stays signed in, a one-time recovery code at sign-up.
-- **Admin panel** — reviews "forgot password" requests (with the user's answers) and issues temporary passwords.
+- **Admin console** — admins get a separate view (no personal schedule): totals across all users, who needs
+  attention, each user's adherence and full report card (with PDF download), and "forgot password" requests.
 - **Dose reminders** — free phone notifications (via the ntfy app) when a dose is due (optionally a few minutes early), a nudge before
   it's marked missed, and optional WhatsApp alerts via Twilio.
 - **Installable (PWA)** — home-screen app on Android and iPhone, with rich link previews when shared.
@@ -42,8 +44,9 @@ Copy `.env.example` to `.env` and fill in what you need. `.env` is git-ignored �
 | Variable | Purpose |
 | --- | --- |
 | `DATABASE_URL` | Neon / Postgres connection string. Empty = local JSON file. Tables are created automatically. |
-| `SITE_URL` | Public address (e.g. `https://pill-oh.example.com`), needed for link-preview thumbnails. Set before `npm run build`. |
+| `SITE_URL` | Public address (e.g. `https://pill-oh.example.com`), needed for link-preview thumbnails and for the picture, icon and "Open Pill-oh" button in ntfy alerts (`public/notify-*.png`). Set before `npm run build`. |
 | `ADMIN_USERNAME`, `ADMIN_PASSWORD` | Optional: creates the first admin on startup. |
+| `ADMIN_UNLOCK_HASH` | Optional: admin unlock key (32+ random chars) or its Argon2id hash. See [Admins](#admins). |
 | `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` | Push notification keys (`npx web-push generate-vapid-keys`). Auto-generated locally if empty. |
 | `NTFY_SERVER`, `NTFY_TOKEN` | Optional: use a self-hosted ntfy server instead of the free public ntfy.sh. |
 | `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_WHATSAPP_FROM` | Enables WhatsApp alerts. Optional `TWILIO_*_CONTENT_SID` for approved templates. |
@@ -59,6 +62,14 @@ either set `ADMIN_USERNAME` / `ADMIN_PASSWORD` in `.env`, or promote an existing
 npm run make-admin -- <username>            # grant
 npm run make-admin -- <username> --revoke   # remove
 ```
+
+On a hosted deploy (e.g. Vercel) use an **unlock key**: **Admin login** asks only for that key and signs in to a
+built-in `admin` account (nobody can sign up with that username).
+
+1. Create a key: `openssl rand -hex 32`, and save it in a password manager.
+2. Set `ADMIN_UNLOCK_HASH` in Vercel and redeploy. Either paste the key itself (32+ characters), or — safer — its
+   Argon2id hash from `printf %s '<key>' | npm run admin-unlock-hash` (or just `npm run admin-unlock-hash` for a new key).
+3. Open **Admin login**, enter the key. Change the key to rotate it; remove the variable to turn this off.
 
 ## Install on a phone
 
@@ -120,6 +131,7 @@ so no extra setup is needed beyond environment variables.
 | `npm run build` | Type-check and build to `dist/` |
 | `npm start` | Run the production server |
 | `npm run make-admin` | Grant or revoke admin access |
+| `npm run admin-unlock-hash` | Create an admin unlock key and its `ADMIN_UNLOCK_HASH` |
 | `npm run assets` | Re-render the logo, icons, banner and share image in `public/` |
 
 ## Security notes

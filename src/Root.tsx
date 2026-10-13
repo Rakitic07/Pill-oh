@@ -12,7 +12,8 @@ type State =
   | { phase: 'recovery-code'; user: User; data: UserData; code: string }
   | { phase: 'ready'; user: User; data: UserData };
 
-const LEGACY_KEYS: DataKey[] = ['medicines', 'logs', 'settings', 'customTheme', 'theme'];
+// 'theme' is left out: the old cache held the default theme too, which would look like a manual pick.
+const LEGACY_KEYS: DataKey[] = ['medicines', 'logs', 'settings', 'customTheme'];
 
 /** Moves data saved by the pre-login version of the app (localStorage only) into the account once. */
 async function loadUserData(): Promise<UserData> {
@@ -30,15 +31,15 @@ async function loadUserData(): Promise<UserData> {
         // Invalid or rejected legacy value: drop it.
       }
     }
-    // The theme key also drives the pre-paint theme script, so keep it.
-    if (key !== 'theme') localStorage.removeItem(storageKey);
+    localStorage.removeItem(storageKey);
   }
+  localStorage.removeItem('pillpal.theme');
+  localStorage.removeItem('pillpal.customVars');
   return data;
 }
 
 export function Root() {
   const [state, setState] = useState<State>({ phase: 'loading' });
-  const [openAdmin, setOpenAdmin] = useState(false);
 
   const enter = useCallback(async (user: User, code?: string) => {
     try {
@@ -83,10 +84,7 @@ export function Root() {
     case 'signed-out':
       return (
         <AuthPage
-          onSignedIn={(user, asAdmin) => {
-            setOpenAdmin(Boolean(asAdmin));
-            enter(user);
-          }}
+          onSignedIn={(user) => enter(user)}
           onNewRecoveryCode={(user, code) => enter(user, code)}
         />
       );
@@ -103,6 +101,6 @@ export function Root() {
         </div>
       );
     case 'ready':
-      return <App user={state.user} initialData={state.data} initialTab={openAdmin && state.user.isAdmin ? 'admin' : 'schedule'} />;
+      return <App user={state.user} initialData={state.data} />;
   }
 }

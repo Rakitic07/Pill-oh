@@ -30,7 +30,7 @@ import {
 } from './schedule';
 import type { Dose, DoseLog, DoseLogs, Medicine, Settings } from './types';
 
-export type Tab = 'schedule' | 'report' | 'medicines' | 'admin';
+export type Tab = 'schedule' | 'report' | 'medicines';
 
 const SYNC_LABEL = { saved: 'All changes saved', saving: 'Saving…', error: 'Offline — will retry' };
 
@@ -78,8 +78,8 @@ export default function App({ user, initialData, initialTab = 'schedule' }: Prop
     const bg = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim();
     if (bg) document.querySelector('meta[name="theme-color"]')?.setAttribute('content', bg);
     // Cached locally so public/theme-init.js can paint the right theme before the app loads.
-    localStorage.setItem('pillpal.theme', JSON.stringify(theme));
-    if (vars) localStorage.setItem('pillpal.customVars', JSON.stringify(vars));
+    localStorage.setItem('pill-oh.theme', JSON.stringify(theme));
+    if (vars) localStorage.setItem('pill-oh.customVars', JSON.stringify(vars));
   }, [theme, customBg, customAccent]);
 
   const now = useNow(30_000);
@@ -130,6 +130,33 @@ export default function App({ user, initialData, initialTab = 'schedule' }: Prop
       ? 'Today'
       : selectedDate.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' });
 
+  if (user.isAdmin) {
+    return (
+      <div className="app">
+        <header className="topbar">
+          <div className="brand">
+            <div className="brand-logo clay"><LogoMark /></div>
+            <div>
+              <h1>Pill-oh <span className="admin-badge">Admin</span></h1>
+              <p>
+                {greeting(now)}, {user.username} 👋
+                <SyncDot />
+              </p>
+            </div>
+          </div>
+          <div className="topbar-actions">
+            <button className="clay-btn icon-btn avatar-btn" aria-label="Account" onClick={() => setShowAccount(true)}>
+              {user.username.slice(0, 1).toUpperCase()}
+            </button>
+            <ThemePicker value={theme} custom={customTheme} onChange={setTheme} onCustomChange={setCustomTheme} />
+          </div>
+        </header>
+        <AdminPanel now={now} />
+        {showAccount && <AccountModal user={user} onClose={() => setShowAccount(false)} />}
+      </div>
+    );
+  }
+
   return (
     <div className="app">
       <header className="topbar">
@@ -162,15 +189,10 @@ export default function App({ user, initialData, initialTab = 'schedule' }: Prop
         <button className={tab === 'medicines' ? 'active' : ''} onClick={() => setTab('medicines')}>
           My medicines <span className="count">{medicines.length}</span>
         </button>
-        {user.isAdmin && (
-          <button className={tab === 'admin' ? 'active' : ''} onClick={() => setTab('admin')}>Admin</button>
-        )}
         <button className={tab === 'report' ? 'active' : ''} onClick={() => setTab('report')}>Report card</button>
       </nav>
 
-      {tab === 'admin' && user.isAdmin ? (
-        <AdminPanel />
-      ) : medicines.length === 0 ? (
+      {medicines.length === 0 ? (
         <section className="empty clay">
           <div className="empty-art clay"><PillIcon width={40} height={40} /></div>
           <h2>No medicines yet</h2>
@@ -245,7 +267,7 @@ export default function App({ user, initialData, initialTab = 'schedule' }: Prop
           )}
         </>
       ) : tab === 'report' ? (
-        <ReportCard medicines={medicines} logs={logs} settings={settings} now={now} />
+        <ReportCard username={user.username} medicines={medicines} logs={logs} settings={settings} now={now} />
       ) : (
         <MedicineList medicines={medicines} onEdit={setEditing} onDelete={deleteMedicine} />
       )}

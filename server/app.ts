@@ -19,6 +19,7 @@ import {
   RateLimiter,
   safeEqualHex,
   sha256,
+  verifyAdminUnlockKey,
   verifyPassword,
 } from './security.ts';
 import { DuplicateUserError, type Store, type UserRecord } from './store/types.ts';
@@ -42,6 +43,9 @@ const MINUTE = 60_000;
 
 const LOGIN_FAILED = 'Invalid username or password.';
 const ADMIN_LOGIN_FAILED = 'Invalid admin username or password.';
+const UNLOCK_FAILED = 'That unlock key isn’t right.';
+/** Account the admin unlock key signs in to; reserved so nobody can sign up with it. */
+const UNLOCK_ADMIN_USERNAME = 'admin';
 const RECOVERY_FAILED = 'Invalid username or recovery code.';
 
 const publicUser = (u: UserRecord) => ({ id: u.id, username: u.username, isAdmin: u.isAdmin, createdAt: u.createdAt });
@@ -182,6 +186,7 @@ export function createApp(store: Store) {
     const password = parsePassword(body.password);
     if (!username) return c.json({ error: USERNAME_RULE }, 400);
     if (!password) return c.json({ error: PASSWORD_RULE }, 400);
+    if (username.toLowerCase() === UNLOCK_ADMIN_USERNAME) return c.json({ error: 'That username is already taken.' }, 409);
 
     const recoveryCode = generateRecoveryCode();
     const now = new Date().toISOString();
@@ -230,6 +235,40 @@ export function createApp(store: Store) {
     limits.login.reset(`u:${username}`);
     await startSession(c, user);
     audit(asAdmin ? 'auth.admin-login' : 'auth.login', { userId: user.id });
+    return c.json({ user: publicUser(user) });
+  });
+
+  // The unlock key alone signs in to the built-in admin account (created on first use, no usable password).
+  app.post('/api/auth/admin-unlock', async (c) => {
+    if (!limits.login.take(clientIp(c))) return tooMany(c);
+    const body = await readBody(c);
+    const key = typeof body.unlockKey === 'string' ? body.unlockKey.trim() : '';
+    if (!(await verifyAdminUnlockKey(config.adminUnlockHash, key))) {
+      audit('auth.admin-unlock.fail', {});
+      return c.json({ error: UNLOCK_FAILED }, 401);
+    }
+
+    let user = await store.getUserByUsername(UNLOCK_ADMIN_USERNAME);
+    if (user && !user.isAdmin) {
+      audit('auth.admin-unlock.blocked', { userId: user.id });
+      return c.json({ error: `A regular account already uses the username “${UNLOCK_ADMIN_USERNAME}”, so the unlock key can’t sign in to it.` }, 409);
+    }
+    if (!user) {
+      const now = new Date().toISOString();
+      user = {
+        id: randomUUID(),
+        username: UNLOCK_ADMIN_USERNAME,
+        usernameLower: UNLOCK_ADMIN_USERNAME,
+        passwordHash: await hashPassword(newSessionToken()),
+        recoveryHash: hashRecoveryCode(generateRecoveryCode()),
+        isAdmin: true,
+        createdAt: now,
+        lastSeenAt: now,
+      };
+      await store.createUser(user);
+    }
+    await startSession(c, user);
+    audit('auth.admin-unlock', { userId: user.id });
     return c.json({ user: publicUser(user) });
   });
 
@@ -446,8 +485,9 @@ export function createApp(store: Store) {
     const body = await readBody(c);
     const channels = { push: body.push === true, whatsapp: body.whatsapp === true, ntfy: body.ntfy === true };
     const sent = await deliver(store, user.id, await store.getUserData(user.id), {
-      title: '💊 Pill-oh test alert',
-      body: 'Alerts are working. You’ll get one like this when a dose is due.',
+      kind: 'test',
+      title: '✅ Pill-oh test alert',
+      body: 'Alerts are working! 🎉\nAt dose time you’ll get a reminder like this, listing each medicine with its dosage and notes.',
       tag: 'test',
       vars: { meds: 'Test medicine', time: 'now' },
     }, channels);
@@ -557,6 +597,29 @@ export function createApp(store: Store) {
     return c.json({
       users: users.map((u) => ({ ...publicUser(u), lastSeenAt: u.lastSeenAt })),
     });
+  });
+
+  // Read-only dose data for every non-admin account; the admin's browser builds the reports from it.
+  admin.get('/reports', async (c) => {
+    const adminUser = c.get('user')!;
+    const users = (await store.listUsers()).filter((u) => !u.isAdmin);
+    const reports = await Promise.all(
+      users.map(async (u) => {
+        const data = await store.getUserData(u.id);
+        const notify = data.notify as { push?: boolean; ntfy?: boolean; whatsapp?: boolean } | undefined;
+        return {
+          ...publicUser(u),
+          lastSeenAt: u.lastSeenAt,
+          remindersOn: Boolean(notify && (notify.push || notify.ntfy || notify.whatsapp)),
+          medicines: Array.isArray(data.medicines) ? data.medicines : [],
+          logs: data.logs && typeof data.logs === 'object' ? data.logs : {},
+          settings: data.settings ?? null,
+        };
+      }),
+    );
+    audit('admin.reports.view', { adminId: adminUser.id, users: reports.length });
+    c.header('Cache-Control', 'no-store');
+    return c.json({ users: reports });
   });
 
   admin.post('/users/:id/reset-password', async (c) => {

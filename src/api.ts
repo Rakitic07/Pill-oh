@@ -64,6 +64,13 @@ export interface AdminUser extends User {
   lastSeenAt: string | null;
 }
 
+export interface AdminUserReport extends AdminUser {
+  remindersOn: boolean;
+  medicines: Medicine[];
+  logs: DoseLogs;
+  settings: Partial<Settings> | null;
+}
+
 export class ApiError extends Error {
   status: number;
   constructor(status: number, message: string) {
@@ -100,6 +107,7 @@ export const api = {
     request<{ user: User; recoveryCode: string }>('POST', '/auth/signup', { username, password }),
   login: (username: string, password: string, admin = false) =>
     request<{ user: User }>('POST', '/auth/login', { username, password, admin }),
+  adminUnlock: (unlockKey: string) => request<{ user: User }>('POST', '/auth/admin-unlock', { unlockKey }),
   recover: (username: string, recoveryCode: string, newPassword: string) =>
     request<{ user: User; recoveryCode: string }>('POST', '/auth/recover', { username, recoveryCode, newPassword }),
   requestReset: (username: string, answers: ResetAnswers) =>
@@ -130,6 +138,7 @@ export const api = {
     resolve: (id: string, action: 'reset' | 'reject') =>
       request<{ tempPassword?: string }>('POST', `/admin/requests/${encodeURIComponent(id)}/resolve`, { action }),
     users: () => request<{ users: AdminUser[] }>('GET', '/admin/users'),
+    reports: () => request<{ users: AdminUserReport[] }>('GET', '/admin/reports'),
     resetUser: (id: string) =>
       request<{ tempPassword: string }>('POST', `/admin/users/${encodeURIComponent(id)}/reset-password`, {}),
   },

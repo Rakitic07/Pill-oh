@@ -15,6 +15,17 @@ export async function verifyPassword(passwordHash: string, password: string): Pr
   }
 }
 
+/**
+ * Checks a key against ADMIN_UNLOCK_HASH: either an Argon2id hash of the key (from `npm run admin-unlock-hash`),
+ * or the key itself when it's a long random value (32+ characters, e.g. `openssl rand -hex 32`).
+ */
+export async function verifyAdminUnlockKey(setting: string, key: string): Promise<boolean> {
+  if (!setting || !key || key.length > 256) return false;
+  if (setting.startsWith('$argon2id$')) return verifyPassword(setting, key);
+  if (setting.length < 32) return false;
+  return safeEqualHex(sha256(`admin-unlock:${setting}`), sha256(`admin-unlock:${key}`));
+}
+
 let decoyHash: Promise<string> | null = null;
 
 /** Spends the same time as a real check so unknown usernames can't be detected by timing. */

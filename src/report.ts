@@ -51,14 +51,23 @@ function dayState(doses: Dose[], isToday: boolean): DayState {
   return isToday ? 'skip' : 'broken';
 }
 
-export function buildReport(
+/** Report for the last `rangeDays` days, ending today. */
+export function buildReport(meds: Medicine[], logs: DoseLogs, settings: Settings, now: Date, rangeDays: number): Report {
+  const today = toDateKey(now);
+  return buildReportBetween(meds, logs, settings, now, addDays(today, -(rangeDays - 1)), today);
+}
+
+/** Report for the inclusive date range `from`..`to` ("YYYY-MM-DD"); streaks always count back from today. */
+export function buildReportBetween(
   meds: Medicine[],
   logs: DoseLogs,
   settings: Settings,
   now: Date,
-  rangeDays: number,
+  from: string,
+  to: string,
 ): Report {
   const today = toDateKey(now);
+  const rangeDays = daysBetween(from, to) + 1;
   const graceMs = settings.graceMinutes * MINUTE;
   const earliest = meds.reduce((min, m) => (m.startDate < min ? m.startDate : min), today);
 
@@ -68,8 +77,8 @@ export function buildReport(
   const byPeriod = new Map<string, Tally>(PERIODS.map((p) => [p, emptyTally()]));
   const days: DayReport[] = [];
 
-  for (let i = rangeDays - 1; i >= 0; i--) {
-    const key = addDays(today, -i);
+  for (let i = 0; i < rangeDays; i++) {
+    const key = addDays(from, i);
     const tally = emptyTally();
     for (const dose of getDosesForDate(meds, logs, key, now, settings)) {
       const result = classify(dose, graceMs);
@@ -116,7 +125,9 @@ export function buildReport(
   };
 }
 
-function daysBetween(a: string, b: string): number {
+export const scoreOf = (t: Tally) => Math.round(adherenceOf(t) * 0.7 + punctualityOf(t) * 0.3);
+
+export function daysBetween(a: string, b: string): number {
   const [ay, am, ad] = a.split('-').map(Number);
   const [by, bm, bd] = b.split('-').map(Number);
   return Math.round((Date.UTC(by, bm - 1, bd) - Date.UTC(ay, am - 1, ad)) / 86_400_000);

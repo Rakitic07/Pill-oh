@@ -14,6 +14,8 @@ export const config = {
   /** Optional first-admin bootstrap; the password is hashed on startup and never stored in plain text. */
   adminUsername: process.env.ADMIN_USERNAME?.trim() ?? '',
   adminPassword: process.env.ADMIN_PASSWORD ?? '',
+  /** Argon2id hash (from `npm run admin-unlock-hash`) of a key that turns the signed-in account into an admin. */
+  adminUnlockHash: process.env.ADMIN_UNLOCK_HASH?.trim() ?? '',
   /** Web Push (VAPID). If unset, a key pair is generated once and kept in server/.data/vapid.json. */
   vapidPublicKey: process.env.VAPID_PUBLIC_KEY?.trim() ?? '',
   vapidPrivateKey: process.env.VAPID_PRIVATE_KEY?.trim() ?? '',
@@ -30,7 +32,11 @@ export const config = {
   /** Only needed for a self-hosted ntfy server with access control. */
   ntfyToken: process.env.NTFY_TOKEN?.trim() ?? '',
   /** Public app address; tapping an ntfy alert opens it. */
-  siteUrl: process.env.SITE_URL?.trim().replace(/\/+$/, '') ?? '',
+  /** Vercel sets VERCEL_PROJECT_PRODUCTION_URL (host only) on every deployment. */
+  siteUrl: (
+    process.env.SITE_URL?.trim() ||
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : '')
+  ).replace(/\/+$/, ''),
   dataDir: fileURLToPath(new URL('./.data/', import.meta.url)),
   localDbFile: process.env.LOCAL_DB_FILE || fileURLToPath(new URL('./.data/local-db.json', import.meta.url)),
 };

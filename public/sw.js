@@ -1,6 +1,6 @@
 // Caches only the app shell and static files. API calls (/api/*) always go to the network,
 // so account data is never stored by the service worker.
-const CACHE = 'pill-oh-v3';
+const CACHE = 'pill-oh-v4';
 // Registered as /sw.js?dev during `npm run dev`: push only, no caching (Vite serves changing source files).
 const DEV = new URL(self.location.href).searchParams.has('dev');
 const SHELL = ['/', '/theme-init.js', '/manifest.webmanifest', '/favicon.svg', '/icon-192.png'];

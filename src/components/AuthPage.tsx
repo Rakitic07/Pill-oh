@@ -53,6 +53,7 @@ export function AuthPage({ onSignedIn, onNewRecoveryCode }: Props) {
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [recoveryCode, setRecoveryCode] = useState('');
+  const [unlockKey, setUnlockKey] = useState('');
   const [answers, setAnswers] = useState({ medicines: '', signupWhen: '', theme: '', contact: '', note: '' });
   const { busy, error, setError, run } = useSubmit();
 
@@ -61,6 +62,7 @@ export function AuthPage({ onSignedIn, onNewRecoveryCode }: Props) {
     setError('');
     setPassword('');
     setConfirm('');
+    setUnlockKey('');
   };
 
   const passwordsMatch = () => {
@@ -76,7 +78,11 @@ export function AuthPage({ onSignedIn, onNewRecoveryCode }: Props) {
     if (mode === 'login') {
       run(async () => onSignedIn((await api.login(username, password)).user));
     } else if (mode === 'admin') {
-      run(async () => onSignedIn((await api.login(username, password, true)).user, true));
+      run(async () => {
+        const { user } = await api.adminUnlock(unlockKey.trim());
+        setUnlockKey('');
+        onSignedIn(user, true);
+      });
     } else if (mode === 'signup') {
       if (!passwordsMatch()) return;
       run(async () => {
@@ -199,7 +205,7 @@ export function AuthPage({ onSignedIn, onNewRecoveryCode }: Props) {
             {mode === 'admin' && (
               <>
                 <h2>🛡️ Admin sign in</h2>
-                <p className="muted">For Pill-oh admins only.</p>
+                <p className="muted">Enter the admin unlock key to open the admin panel.</p>
               </>
             )}
             {mode === 'recover' && <h2>Reset with recovery code</h2>}
@@ -210,7 +216,7 @@ export function AuthPage({ onSignedIn, onNewRecoveryCode }: Props) {
               </>
             )}
 
-            {usernameField}
+            {mode !== 'admin' && usernameField}
 
             {mode === 'recover' && (
               <Field label="Recovery code">
@@ -228,17 +234,33 @@ export function AuthPage({ onSignedIn, onNewRecoveryCode }: Props) {
               </Field>
             )}
 
-            {mode !== 'help' && (
+            {mode !== 'help' && mode !== 'admin' && (
               <Field label={mode === 'recover' ? 'New password' : 'Password'} hint={mode === 'signup' || mode === 'recover' ? 'At least 8 characters.' : undefined}>
                 <input
                   type="password"
                   className="clay-input"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  autoComplete={mode === 'login' || mode === 'admin' ? 'current-password' : 'new-password'}
+                  autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
                   required
-                  minLength={mode === 'login' || mode === 'admin' ? undefined : 8}
+                  minLength={mode === 'login' ? undefined : 8}
                   maxLength={128}
+                />
+              </Field>
+            )}
+
+            {mode === 'admin' && (
+              <Field label="Admin unlock key">
+                <input
+                  type="password"
+                  className="clay-input mono"
+                  value={unlockKey}
+                  onChange={(e) => setUnlockKey(e.target.value)}
+                  autoComplete="off"
+                  spellCheck={false}
+                  required
+                  autoFocus
+                  maxLength={256}
                 />
               </Field>
             )}

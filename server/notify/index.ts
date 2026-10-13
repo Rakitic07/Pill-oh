@@ -3,7 +3,7 @@ import type { Dose, DoseLogs, Medicine, Settings } from '../../src/types.ts';
 import { config } from '../config.ts';
 import type { Store } from '../store/types.ts';
 import { sendPush, type PushPayload, type PushSub } from './push.ts';
-import { isNtfyTopic, sendNtfy } from './ntfy.ts';
+import { isNtfyTopic, sendNtfy, type NtfyKind } from './ntfy.ts';
 import { sendWhatsApp } from './whatsapp.ts';
 
 /** Server-managed data keys (leading underscore: never accepted from, or returned to, the client). */
@@ -62,7 +62,14 @@ const names = (doses: Dose[]) => {
   return list.length <= 2 ? list.join(' & ') : `${list.slice(0, 2).join(', ')} +${list.length - 2} more`;
 };
 
+/** One line per medicine: "• Metformin (500 mg) - after food". */
+const medLines = (doses: Dose[]) =>
+  [...new Map(doses.map((d) => [d.med.id, d.med])).values()]
+    .map((m) => `• ${m.name}${m.dosage ? ` (${m.dosage})` : ''}${m.notes?.trim() ? ` - ${m.notes.trim().slice(0, 80)}` : ''}`)
+    .join('\n');
+
 export interface Alert extends PushPayload {
+  kind: NtfyKind;
   /** Short values for an approved WhatsApp template: {{1}} medicines, {{2}} time. */
   vars: { meds: string; time: string };
 }
@@ -149,17 +156,20 @@ export async function runNotifier(store: Store) {
     for (const { kind, time, doses: group } of groups.values()) {
       const meds = names(group);
       const at = clock(time);
+      const list = medLines(group);
       const alert: Alert =
         kind === 'due'
           ? {
+              kind,
               title: `💊 Time for ${meds}`,
-              body: prefs.leadMinutes ? `Due in ${prefs.leadMinutes} min, at ${at}. Tap to open Pill-oh.` : `Due now (${at}). Tap to tick it off in Pill-oh.`,
+              body: `${list}\n\n${prefs.leadMinutes ? `⏳ Due in ${prefs.leadMinutes} min, at ${at}.` : `🕒 Due now, ${at}.`} Tap to tick it off in Pill-oh.`,
               tag: `due-${group[0].key}`,
               vars: { meds, time: at },
             }
           : {
+              kind,
               title: `⏰ Did you take ${meds}?`,
-              body: `It was due at ${at} and will be marked missed soon. Tap to tick it off.`,
+              body: `${list}\n\n🕒 It was due at ${at} and will be marked missed soon. Tap to tick it off.`,
               tag: `nudge-${group[0].key}`,
               vars: { meds, time: at },
             };

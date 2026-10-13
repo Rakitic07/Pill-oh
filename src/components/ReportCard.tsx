@@ -6,14 +6,17 @@ import {
   pct,
   punctualityOf,
   resolvedOf,
+  scoreOf,
   takenOf,
   type DayReport,
   type Tally,
 } from '../report';
 import { fromDateKey, WEEKDAYS } from '../schedule';
 import type { DoseLogs, Medicine, Settings } from '../types';
+import { ReportDownload } from './ReportDownload';
 
 interface Props {
+  username: string;
   medicines: Medicine[];
   logs: DoseLogs;
   settings: Settings;
@@ -149,7 +152,7 @@ function HBar({ label, value, sub, color }: { label: ReactNode; value: number; s
   );
 }
 
-export const ReportCard = memo(function ReportCard({ medicines, logs, settings, now }: Props) {
+export const ReportCard = memo(function ReportCard({ username, medicines, logs, settings, now }: Props) {
   const [range, setRange] = useState(7);
   // The range buttons respond instantly; the heavier chart render follows without blocking input.
   const deferredRange = useDeferredValue(range);
@@ -164,7 +167,7 @@ export const ReportCard = memo(function ReportCard({ medicines, logs, settings, 
   const resolved = resolvedOf(total);
   const adherence = adherenceOf(total);
   const punctuality = punctualityOf(total);
-  const score = Math.round(adherence * 0.7 + punctuality * 0.3);
+  const score = scoreOf(total);
   const grade = gradeFor(score);
   const avgDelay = report.delays.length ? report.delays.reduce((a, b) => a + b, 0) / report.delays.length : null;
 
@@ -322,6 +325,7 @@ export const ReportCard = memo(function ReportCard({ medicines, logs, settings, 
         </ul>
       </section>
       </div>
+      <ReportDownload username={username} medicines={medicines} logs={logs} settings={settings} now={now} />
     </div>
   );
 });
