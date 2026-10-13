@@ -1,0 +1,74 @@
+server/scripts/admin-unlock-hash.ts
+  s_6e389d8ab8807a::t_e93c1b55eb3be6 1-17
+README.md
+  s_6e389d8ab8807a::t_21040163bb4959 132
+  s_6e389d8ab8807a::t_2b190c7ef25c26 22
+  s_6e389d8ab8807a::t_d0cc2403dd7697 47
+  s_6e389d8ab8807a::t_943a56a8ae4ffc 66,71
+  s_6e389d8ab8807a::t_b51e66e3ede0f9 64-65,67-70
+server/config.ts
+  s_6e389d8ab8807a::t_b30b012950f7ab 17-18
+src/themes.ts
+  s_6e389d8ab8807a::t_52458eeb729a97 1,4-5,8
+public/logo.svg
+  s_6e389d8ab8807a::t_4079ccdab341d1 5,11,31
+public/theme-init.js
+  s_6e389d8ab8807a::t_267826b5561d82 5,8,16
+server/app.ts
+  s_6e389d8ab8807a::t_93eb31cc18e3d2 46-48
+  s_6e389d8ab8807a::t_16ff048625a023 189
+  s_6e389d8ab8807a::t_7271d86fad2792 22
+  s_6e389d8ab8807a::t_598faf8f2253ba 241-253,255-274
+  s_6e389d8ab8807a::t_f80cc7b7c6f6cc 254
+index.html
+  s_6e389d8ab8807a::t_303dbc656148c6 8
+src/api.ts
+  s_6e389d8ab8807a::t_b3d7f46e936aa7 103
+public/sw.js
+  s_6e389d8ab8807a::t_77f91f3ea1a825 3
+.env.example
+  s_6e389d8ab8807a::t_a4674083e8953e 21-23
+  s_6e389d8ab8807a::t_c2a6a4fd10799b 24-25
+src/App.tsx
+  s_6e389d8ab8807a::t_da058d80bc53be 81-82
+src/components/AuthPage.tsx
+  s_6e389d8ab8807a::t_518a996ce2efd2 81,83-85
+  s_6e389d8ab8807a::t_107c4e96f44329 56
+  s_6e389d8ab8807a::t_13c3775bef81f9 65
+  s_6e389d8ab8807a::t_81d1a0456c42cb 82
+  s_6e389d8ab8807a::t_b9e0dda02e71d1 252,254-260,263-267
+  s_6e389d8ab8807a::t_2fd0cca4a6c52b 253,261-262
+  s_6e389d8ab8807a::t_6e37a9e61d1897 208,219,237,244,246
+src/styles.css
+  s_6e389d8ab8807a::t_0a08fa0b8f5125 23-46
+public/favicon.svg
+  s_6e389d8ab8807a::t_1c69d86d6700d2 5,11,31
+public/manifest.webmanifest
+  s_6e389d8ab8807a::t_77185c2f89f9e9 10-11
+package.json
+  s_6e389d8ab8807a::t_cff23c5c44e066 14-15
+server/security.ts
+  s_6e389d8ab8807a::t_e307419faea9e1 18-26
+  s_6e389d8ab8807a::t_cd201ce8017ff1 27-28
+scripts/generate-assets.mjs
+  s_6e389d8ab8807a::t_896f8096b7e2e9 8,23,43,49,76,79,82-83,89,94,97-98,104-105,111,114-116,119-120,122,124,128,132-134
+src/Root.tsx
+  s_6e389d8ab8807a::t_db086cea4b1a6e 15-16
+  s_6e389d8ab8807a::t_06af16a694a229 34,36-37
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "e6a938b2a86ac1bfca0c26c494b41ef37c169927",
+  "prompts": {},
+  "sessions": {
+    "s_6e389d8ab8807a": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "ccd33f2e-9f46-445a-946d-8f59a218ddf6",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": null
+    }
+  }
+}
