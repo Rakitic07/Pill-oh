@@ -115,6 +115,7 @@ so no extra setup is needed beyond environment variables.
    | `SITE_URL` | Your Vercel address, e.g. `https://pill-oh.vercel.app` (no trailing slash). |
    | `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` | Optional (browser push, not shown in the app right now). From `npx web-push generate-vapid-keys`. |
    | `CRON_SECRET` | Long random value (`openssl rand -hex 32`). Needed for reminders. |
+   | `CRON_INTERVAL_MINUTES` | Minutes between scheduler calls (default 1); must match the cron schedule. Reminders arrive up to this many minutes early. On Neon's free plan, a 1-minute cron keeps the database awake all month and uses up its compute hours. |
    | `ADMIN_USERNAME`, `ADMIN_PASSWORD` | Optional first admin. |
    | `NTFY_*`, `TWILIO_*` | Optional, as above. |
 

@@ -11,6 +11,8 @@ export const config = {
   trustProxy: process.env.TRUST_PROXY === '1' || process.env.VERCEL === '1',
   /** Shared secret for GET /api/cron/notify (Vercel Cron or an external scheduler such as cron-job.org). */
   cronSecret: process.env.CRON_SECRET?.trim() ?? '',
+  /** How often that scheduler calls it; alerts go out on the call before they're due. */
+  cronIntervalMinutes: Math.min(60, Math.max(1, Math.floor(Number(process.env.CRON_INTERVAL_MINUTES)) || 1)),
   /** Optional first-admin bootstrap; the password is hashed on startup and never stored in plain text. */
   adminUsername: process.env.ADMIN_USERNAME?.trim() ?? '',
   adminPassword: process.env.ADMIN_PASSWORD ?? '',

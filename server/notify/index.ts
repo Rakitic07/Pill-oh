@@ -102,8 +102,10 @@ export async function deliver(store: Store, userId: string, data: Record<string,
 }
 
 const TICK_MS = MINUTE;
-/** A trigger fires on any tick inside this window, so a slow tick or short restart doesn't skip it. */
-const WINDOW_MS = 5 * MINUTE;
+/** Gap between runs: 1 min in-process, or the external cron's interval on Vercel. */
+const INTERVAL_MS = (config.isVercel ? config.cronIntervalMinutes : 1) * MINUTE;
+/** A trigger fires on any run inside this window, so a slow or skipped run doesn't drop it. */
+const WINDOW_MS = Math.max(5 * MINUTE, INTERVAL_MS + 2 * MINUTE);
 
 /** Doses already alerted, kept in the database so serverless instances and restarts don't send twice. */
 const NOTIFIED_KEY = '_notified';
@@ -130,8 +132,8 @@ export async function runNotifier(store: Store) {
 
     const groups = new Map<string, { kind: 'due' | 'nudge'; time: string; doses: Dose[] }>();
     const consider = (dose: Dose, kind: 'due' | 'nudge', triggerAt: number) => {
-      // Due alerts go out on the tick before their time, so cron/cold-start delay never makes them late.
-      const diff = now.getTime() - (kind === 'due' ? triggerAt - TICK_MS : triggerAt);
+      // Alerts go out on the run before their time, so cron/cold-start delay never makes them late.
+      const diff = now.getTime() - (triggerAt - INTERVAL_MS);
       if (dose.log || diff < 0 || diff >= WINDOW_MS) return;
       const id = `${dose.key}|${kind}`;
       if (notified[id]) return;
@@ -156,7 +158,7 @@ export async function runNotifier(store: Store) {
           ? {
               kind,
               title: `💊 Time for ${meds}`,
-              body: `${prefs.leadMinutes ? `⏳ Due at ${at}.` : `🕒 Due now, ${at}.`} Tap to tick it off in Pill-oh.`,
+              body: `${prefs.leadMinutes || INTERVAL_MS > MINUTE ? `⏳ Due at ${at}.` : `🕒 Due now, ${at}.`} Tap to tick it off in Pill-oh.`,
               tag: `due-${group[0].key}`,
               vars: { meds, time: at },
             }
